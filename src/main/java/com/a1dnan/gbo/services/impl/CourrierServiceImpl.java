@@ -4,6 +4,7 @@ import com.a1dnan.gbo.dtos.CourrierDto;
 import com.a1dnan.gbo.entities.Courrier;
 import com.a1dnan.gbo.entities.Employe;
 import com.a1dnan.gbo.entities.Expediteur;
+import com.a1dnan.gbo.entities.enums.TypeCourrier;
 import com.a1dnan.gbo.repositories.CourrierRepository;
 import com.a1dnan.gbo.repositories.EmployeRepository;
 import com.a1dnan.gbo.repositories.ExpediteurRepository;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +50,23 @@ public class CourrierServiceImpl implements CourrierService {
         employeRepository.save(employe);
 
         return CourrierDto.fromEntity(courrierSaved);
+    }
+
+    @Override
+    public List<CourrierDto> findAll() {
+       return courrierRepository.findAll()
+               .stream()
+               .map(CourrierDto::fromEntity)
+               .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourrierDto> findCourrierByEmployeNom(String nom) {
+        return courrierRepository.findAllCourrierByEmployeNomContains(nom);
+    }
+
+    @Override
+    public List<CourrierDto> findAllCourrierByType(TypeCourrier type) {
+        return courrierRepository.findAllCourrierByType(type);
     }
 }

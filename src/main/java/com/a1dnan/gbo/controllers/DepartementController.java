@@ -4,9 +4,10 @@ import com.a1dnan.gbo.dtos.DepartementDto;
 import com.a1dnan.gbo.entities.Departement;
 import com.a1dnan.gbo.services.DepartementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,12 +17,16 @@ public class DepartementController {
     private final DepartementService departementService;
 
     @PostMapping
-    public DepartementDto addDepartement(@RequestBody DepartementDto departement){
+    public ResponseEntity<DepartementDto> addDepartement(@RequestBody DepartementDto departement){
 
-        return departementService.addDepartement(departement);
+        return ResponseEntity.ok(departementService.addDepartement(departement));
     }
     @GetMapping("/{id}")
-    public DepartementDto getDepartement(@PathVariable Long id){
-        return departementService.getDepartement(id);
+    public ResponseEntity<DepartementDto> getDepartement(@PathVariable Long id){
+        return ResponseEntity.ok(departementService.getDepartement(id));
+    }
+    @GetMapping
+    public ResponseEntity<List<DepartementDto>> findAll(){
+        return ResponseEntity.ok(departementService.findAll());
     }
 }

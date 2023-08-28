@@ -8,7 +8,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,12 @@ public class ExpediteurServiceImpl implements ExpediteurService {
     public ExpediteurDto getExp(Long id) {
         return expediteurRepository.findById(id).map(ExpediteurDto::fromEntity)
                 .orElseThrow(() ->new EntityNotFoundException("No sender was found"));
+    }
+    @Override
+    public List<ExpediteurDto> findAll() {
+        return expediteurRepository.findAll()
+                .stream()
+                .map(ExpediteurDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

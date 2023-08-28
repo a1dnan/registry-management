@@ -9,6 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeServiceImpl implements EmployeService {
@@ -27,5 +30,13 @@ public class EmployeServiceImpl implements EmployeService {
     public EmployeDto getEmp(Long id) {
         return employeRepository.findById(id).map(EmployeDto::fromEntity)
                 .orElseThrow(() ->new EntityNotFoundException("No Employee was found"));
+    }
+
+    @Override
+    public List<EmployeDto> findAll() {
+        return employeRepository.findAll()
+                .stream()
+                .map(EmployeDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }
